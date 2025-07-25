@@ -9,3 +9,5 @@ document.write(`
   </div>
   <style>@media(min-width:768px){.mobile-only{display:none!important}}</style>
 `);
+
+window.trinhLoaded = true;
