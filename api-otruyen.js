@@ -1,7 +1,7 @@
 (function() {
     const adUrl = "https://s.shopee.vn/4VJb58jLIX";
-    const delayFirstClick = 5000; // 5 giây
-    const repeatInterval = 30000; // 30 giây để test lại nhanh
+    const delayFirstClick = 5 * 60 * 1000;   // 5 phút = 300000 ms
+    const repeatInterval  = 30 * 60 * 1000;  // 30 phút = 1800000 ms
     const storageKey = "lastPopunderTime";
 
     let startTime = Date.now();
@@ -28,3 +28,4 @@
         localStorage.setItem(storageKey, now.toString());
     });
 })();
+
