@@ -1,40 +1,30 @@
 (function() {
-    // ====== Cấu hình ======
-    const adUrl = "https://s.shopee.vn/4VJb58jLIX"; // Link QC
-    const delayFirstClick = 5 * 1000; // 5 phút tính bằng ms
-    const repeatInterval = 30 * 60 * 1000; // 30 phút tính bằng ms
-    const storageKey = "lastPopunderTime"; // LocalStorage key
+    const adUrl = "https://s.shopee.vn/4VJb58jLIX";
+    const delayFirstClick = 5000; // 5 giây
+    const repeatInterval = 30000; // 30 giây để test lại nhanh
+    const storageKey = "lastPopunderTime";
 
-    let readyToOpen = false;
+    let startTime = Date.now();
 
-    // Sau 5 phút kể từ khi vào trang → bật trạng thái sẵn sàng
-    setTimeout(() => {
-        readyToOpen = true;
-    }, delayFirstClick);
-
-    // Lắng nghe click trên trang
     document.addEventListener("click", function() {
-        if (!readyToOpen) return; // chưa đủ 5 phút
-
-        let lastTime = localStorage.getItem(storageKey);
         let now = Date.now();
 
-        // Nếu chưa từng mở hoặc đã đủ 30 phút
-        if (!lastTime || now - parseInt(lastTime) >= repeatInterval) {
-            openPopunder(adUrl);
-            localStorage.setItem(storageKey, now.toString());
-            readyToOpen = false; // tắt cờ cho tới lần sau
-            setTimeout(() => readyToOpen = true, repeatInterval); // bật lại sau 30 phút
-        }
-    });
+        // Chưa đủ 5 giây thì bỏ qua
+        if (now - startTime < delayFirstClick) return;
 
-    function openPopunder(url) {
-        // Tạo popunder (tab mới nhưng đẩy ra sau)
-        let win = window.open(url, "_blank");
+        // Kiểm tra thời gian lần mở gần nhất
+        let lastTime = parseInt(localStorage.getItem(storageKey) || "0");
+        if (now - lastTime < repeatInterval) return;
+
+        // Mở popunder ngay trong click → ít bị chặn hơn
+        let win = window.open(adUrl, "_blank");
         if (win) {
-            win.blur();
-            window.focus();
+            try {
+                win.blur();
+                window.focus();
+            } catch (e) {}
         }
-    }
-})();
 
+        localStorage.setItem(storageKey, now.toString());
+    });
+})();
