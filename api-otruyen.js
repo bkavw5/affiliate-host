@@ -1,7 +1,7 @@
 (function() {
     // ====== Cấu hình ======
     const adUrl = "https://s.shopee.vn/4VJb58jLIX"; // Link QC
-    const delayFirstClick = 5 * 60 * 1000; // 5 phút tính bằng ms
+    const delayFirstClick = 5 * 1000; // 5 phút tính bằng ms
     const repeatInterval = 30 * 60 * 1000; // 30 phút tính bằng ms
     const storageKey = "lastPopunderTime"; // LocalStorage key
 
@@ -37,3 +37,4 @@
         }
     }
 })();
+
