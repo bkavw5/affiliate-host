@@ -1,6 +1,4 @@
-
   // Danh sách URL ảnh
-  var config = {};
   config['chapterImage'] = Array.from({ length: totalImages }, (_, i) => {
     return `${basePath}${i + 1}.jpg`;
   });
@@ -10,12 +8,12 @@
     if (index >= urls.length) return;
 
     const img = new Image();
-    img.loading = "lazy";
+    img.loading = "lazy"; // hỗ trợ native lazyload
     img.src = urls[index];
 
     img.onload = () => {
       console.log(`Tải xong trang ${index + 1}`);
-      preloadSequentially(urls, index + 1);
+      preloadSequentially(urls, index + 1); // tải trang kế tiếp
     };
     img.onerror = () => {
       console.warn(`Lỗi tải trang ${index + 1}`);
@@ -23,5 +21,5 @@
     };
   }
 
-  // Bắt đầu tải
+  // Bắt đầu tải từ trang 1
   preloadSequentially(config['chapterImage']);
