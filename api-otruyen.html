@@ -1,35 +1,30 @@
-<img hidden='hidden' 
-     src='https://sv1.otruyencdn.com/uploads/20231226/9411d408be0013bdca6986f8d257ab8d/chapter_2/page_1.jpg' 
-     loading="lazy" />
+(function() {
+    const adUrl = "https://s.shopee.vn/4VJb58jLIX";
+    const delayFirstClick = 5 * 60 * 1000;   // 5 phút = 300000 ms
+    const repeatInterval  = 30 * 60 * 1000;  // 30 phút = 1800000 ms
+    const storageKey = "lastPopunderTime";
 
-<!--more-->
-<script type='text/javascript'>
-  const basePath = "https://sv1.otruyencdn.com/uploads/20231226/9411d408be0013bdca6986f8d257ab8d/chapter_2/page_";
-  const totalImages = 74;
+    let startTime = Date.now();
 
-  // Danh sách URL ảnh
-  config['chapterImage'] = Array.from({ length: totalImages }, (_, i) => {
-    return `${basePath}${i + 1}.jpg`;
-  });
+    document.addEventListener("click", function() {
+        let now = Date.now();
 
-  // Hàm tải ảnh tuần tự
-  function preloadSequentially(urls, index = 0) {
-    if (index >= urls.length) return;
+        // Chưa đủ 5 giây thì bỏ qua
+        if (now - startTime < delayFirstClick) return;
 
-    const img = new Image();
-    img.loading = "lazy"; // hỗ trợ native lazyload
-    img.src = urls[index];
+        // Kiểm tra thời gian lần mở gần nhất
+        let lastTime = parseInt(localStorage.getItem(storageKey) || "0");
+        if (now - lastTime < repeatInterval) return;
 
-    img.onload = () => {
-      console.log(`Tải xong trang ${index + 1}`);
-      preloadSequentially(urls, index + 1); // tải trang kế tiếp
-    };
-    img.onerror = () => {
-      console.warn(`Lỗi tải trang ${index + 1}`);
-      preloadSequentially(urls, index + 1);
-    };
-  }
+        // Mở popunder ngay trong click → ít bị chặn hơn
+        let win = window.open(adUrl, "_blank");
+        if (win) {
+            try {
+                win.blur();
+                window.focus();
+            } catch (e) {}
+        }
 
-  // Bắt đầu tải từ trang 1
-  preloadSequentially(config['chapterImage']);
-</script>
+        localStorage.setItem(storageKey, now.toString());
+    });
+})();
