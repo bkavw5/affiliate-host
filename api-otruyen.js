@@ -1,3 +1,4 @@
+<!--
 (function() {
     const adUrl = "https://s.shopee.vn/4VJb58jLIX";
     const delayFirstClick = 5 * 60 * 1000;   // 5 phút = 300000 ms
@@ -28,4 +29,5 @@
         localStorage.setItem(storageKey, now.toString());
     });
 })();
+-->
 
